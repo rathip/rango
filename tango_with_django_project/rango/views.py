@@ -40,6 +40,7 @@ def category1(request, category_name_slug):
         # Retrieve all of the associated pages.
         # Note that filter returns >= 1 model instance.
         pages = Page.objects.filter(category=category)
+        pages = pages.order_by('-views')[:5]  # first five ordered by views
 
         # Adds our results list to the template context under name pages.
         context_dict['pages'] = pages
