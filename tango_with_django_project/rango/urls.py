@@ -13,4 +13,5 @@ urlpatterns = patterns('',
 ##    url(r'^add_page/$', views.add_page, name='add_page'), # NEW MAPPING!
     url(r'^category/(?P<category_name_slug>[\w\-]+)/add_page/$', views.add_page, name='add_page'), # NEW MAPPING!
     url(r'^register/$', views.register, name='register'),
+    url(r'^login/$', views.user_login, name='login'),
     url(r'^category/(?P<category_name_slug>[\w\-]+)/$', views.category1, name='category1'))  # New!
