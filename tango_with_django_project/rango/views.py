@@ -21,7 +21,9 @@ def index(request):
     # Order the categories by no. likes in descending order.
     # Retrieve the top 5 only - or all if less than 5.
     # Place the list in our context_dict dictionary which will be passed to the template engine.
-    category_list = Category.objects.order_by('-likes')[:5]
+    request.session.set_test_cookie()
+##    category_list = Category.objects.order_by('-likes')[:5]
+    category_list = Category.objects.order_by('-likes')
     context_dict = {'categories': category_list}
 
     # Render the response and send it back!
@@ -47,7 +49,8 @@ def category1(request, category_name_slug):
         # Retrieve all of the associated pages.
         # Note that filter returns >= 1 model instance.
         pages = Page.objects.filter(category=category)
-        pages = pages.order_by('-views')[:5]  # first five ordered by views
+##        pages = pages.order_by('-views')[:5]  # first five ordered by views
+        pages = pages.order_by('-views')
 
         # Adds our results list to the template context under name pages.
         context_dict['pages'] = pages
@@ -118,6 +121,10 @@ def add_page(request, category_name_slug):
     return render(request, 'rango/add_page.html', context_dict)
 
 def register(request):
+    if request.session.test_cookie_worked():
+        print ">>>> TEST COOKIE WORKED!"
+        request.session.delete_test_cookie()
+
 
     # A boolean value for telling the template whether the registration was successful.
     # Set to False initially. Code changes value to True when registration succeeds.
