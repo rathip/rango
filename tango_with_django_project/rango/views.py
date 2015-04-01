@@ -14,7 +14,8 @@ from django.contrib.auth import logout
 from datetime import datetime
 
 def index(request):
-    category_list = Category.objects.all()
+##    category_list = Category.objects.all()
+    category_list = Category.objects.order_by('-views')[:5]
     page_list = Page.objects.order_by('-views')[:5]
     context_dict = {'categories': category_list, 'pages': page_list}
 
@@ -34,7 +35,7 @@ def index(request):
         last_visit_time = datetime.strptime(last_visit[:-7], "%Y-%m-%d %H:%M:%S")
 
         # If it's been more than a day since the last visit...
-        if (datetime.now() - last_visit_time).seconds > 5:
+        if (datetime.now() - last_visit_time).days > 1:
             visits = visits + 1
             # ...and flag that the cookie last visit needs to be updated
             reset_last_visit_time = True
@@ -81,8 +82,8 @@ def category1(request, category_name_slug):
         # Retrieve all of the associated pages.
         # Note that filter returns >= 1 model instance.
         pages = Page.objects.filter(category=category)
-##        pages = pages.order_by('-views')[:5]  # first five ordered by views
-        pages = pages.order_by('-views')
+        pages = pages.order_by('-views')[:5]  # first five ordered by views
+##        pages = pages.order_by('-views')
 
         # Adds our results list to the template context under name pages.
         context_dict['pages'] = pages
